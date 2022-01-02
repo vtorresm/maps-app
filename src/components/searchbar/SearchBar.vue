@@ -2,9 +2,16 @@
 
 <template>
   <div class="searchbar-container">
-    <input class="form-control" type="text" placeholder="Buscar lugares..." />
+    <input
+      class="form-control"
+      type="text"
+      placeholder="Buscar lugares..."
+      v-model="searchTerm"
+    />
 
-   <SearchResults />
+    {{ debounceValued }}
+
+    <SearchResults />
   </div>
 </template>
 
