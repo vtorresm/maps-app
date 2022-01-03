@@ -1,15 +1,18 @@
-import { defineComponent, ref } from "vue";
-import { useMapStore, usePlacesStore } from "@/composables";
-import { Feature } from "@/interfaces/places";
+import { defineComponent, ref, watch } from 'vue';
+import { useMapStore, usePlacesStore } from '@/composables';
+import { Feature } from '@/interfaces/places';
 
 export default defineComponent({
-  name: "SearchResults",
+  name: 'SearchResults',
   setup() {
-
     const { isLoadingPlaces, places } = usePlacesStore();
-    const { map } = useMapStore();
-    const activePlace = ref('')
+    const { map, setPlaceMarkers } = useMapStore();
+    const activePlace = ref('');
 
+    watch( places, (newPlaces) => {
+      activePlace.value = '';
+      setPlaceMarkers(newPlaces);
+    });
 
     return {
       isLoadingPlaces,
@@ -22,9 +25,9 @@ export default defineComponent({
 
         map.value?.flyTo({
           center: [lng, lat],
-          zoom: 15
+          zoom: 15,
         });
-      }
+      },
     };
   },
 });
