@@ -24,6 +24,7 @@
               ? 'btn-outline-light'
               : 'btn-outline-primary'
           "
+          @click.self="getRouteDirections(place)"
         >
           Direcciones
         </button>

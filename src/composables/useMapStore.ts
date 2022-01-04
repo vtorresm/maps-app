@@ -1,7 +1,7 @@
 import { StateInterface } from "@/store";
 import { computed } from "vue";
 
-import mapboxgl from "mapbox-gl";
+import mapboxgl, { LngLat } from "mapbox-gl";
 import { useStore } from "vuex";
 import { Feature } from "@/interfaces/places";
 
@@ -23,5 +23,6 @@ export const useMapStore = () => {
       setPlaceMarkers: (places: Feature[]) => store.commit("map/setPlaceMarkers", places),
 
       // Actions
+      getRouteBetweenPoints: (start: LngLat, end: LngLat) => store.dispatch("map/getRouteBetweenPoints", { start, end }),
     }
 };
