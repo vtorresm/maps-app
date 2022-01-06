@@ -14,6 +14,11 @@ const actions: ActionTree<MapState, StateInterface> = {
     const resp = await directionApi.get<DirectionsResponse>(
       `${start.join(',')};${end.join(',')}`
     );
+
+    commit('setDistanceDuration', {
+      distance: resp.data.routes[0].distance,
+      duration: resp.data.routes[0].duration,
+    });
     //console.log(resp.data.routes[0].geometry.coordinates);
 
     // Todo: state distance
