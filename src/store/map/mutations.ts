@@ -31,6 +31,22 @@ const mutation: MutationTree<MapState> = {
       state.markers.push(marker);
     }
   },
+
+  setRoutePolyline(state, coords: number[][]) {
+    const start = coords[0];
+    const end = coords[coords.length - 1];
+
+    const bounds = new mapboxgl.LngLatBounds(
+      // Definir los bounds
+      [start[0], start[1]],
+      [end[0], end[1]]
+    );
+
+    for(const coord of coords) {
+      const newCoord: [number, number] = [coord[0], coord[1]];
+      bounds.extend(newCoord);
+    }
+  },
 };
 
 export default mutation;
