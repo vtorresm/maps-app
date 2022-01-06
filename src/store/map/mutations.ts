@@ -30,6 +30,12 @@ const mutation: MutationTree<MapState> = {
 
       state.markers.push(marker);
     }
+
+    // Clear polyline
+    if (state.map.getLayer('RouteString')) {
+      state.map.removeLayer('RouteString');
+      state.map.removeSource('RouteString');
+    }
   },
 
   setRoutePolyline(state, coords: number[][]) {
