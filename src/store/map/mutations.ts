@@ -1,10 +1,11 @@
-import { Feature } from '@/interfaces/places';
-import mapboxgl from 'mapbox-gl';
 import { MutationTree } from 'vuex';
 import { MapState } from './state';
+import Mapboxgl from 'mapbox-gl';
+
+import { Feature } from '@/interfaces/places';
 
 const mutation: MutationTree<MapState> = {
-  setMap(state, map: mapboxgl.Map) {
+  setMap(state, map: Mapboxgl.Map) {
     state.map = map;
   },
 
@@ -20,22 +21,23 @@ const mutation: MutationTree<MapState> = {
     state.duration = Math.floor(duration / 60);
   },
 
-  setPlacemarkers(state, places: Feature[]) {
-    // Remove all existing markers
+  setPlaceMarkers(state, places: Feature[]) {
+    // Borrar marcadores
     state.markers.forEach((marker) => marker.remove());
     state.markers = [];
 
     if (!state.map) return;
 
-    // Add new markers
+    // Crear los nuevos marcadores
     for (const place of places) {
       const [lng, lat] = place.center;
 
-      const popup = new mapboxgl.Popup()
-        .setLngLat([lng, lat])
-        .setHTML(`<h3>${place.text}</h3>`);
+      const popup = new Mapboxgl.Popup().setLngLat([lng, lat]).setHTML(`
+                <h4>${place.text}</h4>
+                <p>${place.place_name}</p>
+            `);
 
-      const marker = new mapboxgl.Marker()
+      const marker = new Mapboxgl.Marker()
         .setLngLat([lng, lat])
         .setPopup(popup)
         .addTo(state.map);
@@ -47,6 +49,8 @@ const mutation: MutationTree<MapState> = {
     if (state.map.getLayer('RouteString')) {
       state.map.removeLayer('RouteString');
       state.map.removeSource('RouteString');
+      state.distance = undefined;
+      state.duration = undefined;
     }
   },
 
@@ -54,13 +58,13 @@ const mutation: MutationTree<MapState> = {
     const start = coords[0];
     const end = coords[coords.length - 1];
 
-    const bounds = new mapboxgl.LngLatBounds(
-      // Definir los bounds
+    // Definir los bounds
+    const bounds = new Mapboxgl.LngLatBounds(
       [start[0], start[1]],
-      [end[0], end[1]]
+      [start[0], start[1]]
     );
 
-    // Agregando cada punto al bounds
+    // Agregamos cada punto al bounds
     for (const coord of coords) {
       const newCoord: [number, number] = [coord[0], coord[1]];
       bounds.extend(newCoord);
@@ -71,7 +75,7 @@ const mutation: MutationTree<MapState> = {
     });
 
     // Polyline
-    const sourceData: mapboxgl.AnySourceData = {
+    const soucerData: Mapboxgl.AnySourceData = {
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
@@ -93,15 +97,15 @@ const mutation: MutationTree<MapState> = {
       state.map.removeSource('RouteString');
     }
 
-    state.map?.addSource('RouteString', sourceData);
+    state.map?.addSource('RouteString', soucerData);
 
     state.map?.addLayer({
       id: 'RouteString',
       type: 'line',
       source: 'RouteString',
       layout: {
-        'line-join': 'round',
         'line-cap': 'round',
+        'line-join': 'round',
       },
       paint: {
         'line-color': 'black',

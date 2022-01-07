@@ -9,25 +9,24 @@ export default defineComponent({
   components: { SearchResults },
   setup() {
     const debounceTimeout = ref();
-    const debounceValued = ref('');
+    const debouncedValue = ref('');
 
     const { searchPlacesByTerm } = usePlacesStore();
 
     return {
-      debounceValued,
+      debouncedValue,
 
       searchTerm: computed({
         get() {
-          return debounceValued.value;
+          return debouncedValue.value;
         },
         set(val: string) {
           if (debounceTimeout.value) clearTimeout(debounceTimeout.value);
 
           debounceTimeout.value = setTimeout(() => {
-            debounceValued.value = val;
+            debouncedValue.value = val;
             searchPlacesByTerm(val);
           }, 500);
-          //
         },
       }),
     };

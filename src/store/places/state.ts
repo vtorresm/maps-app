@@ -1,7 +1,7 @@
 import { Feature } from '@/interfaces/places';
 export interface PlacesState {
   isLoading: boolean;
-  userLocation?: [number, number];
+  userLocation?: [number, number]; // lng, lat
   isLoadingPlaces: boolean;
   places: Feature[];
 }

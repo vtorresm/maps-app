@@ -19,9 +19,7 @@ const actions: ActionTree<MapState, StateInterface> = {
       distance: resp.data.routes[0].distance,
       duration: resp.data.routes[0].duration,
     });
-    //console.log(resp.data.routes[0].geometry.coordinates);
 
-    // Todo: state distance
     commit('setRoutePolyline', resp.data.routes[0].geometry.coordinates);
   },
 };

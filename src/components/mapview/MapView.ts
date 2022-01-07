@@ -23,8 +23,8 @@ export default defineComponent({
       });
 
       const myLocationPopup = new mapboxgl.Popup()
-        .setLngLat(userLocation.value)
-        .setHTML('<p>You are here</p>')
+      .setLngLat(userLocation.value)
+      .setHTML('<p>You are here</p>')
 
       const myLocationMarker = new mapboxgl.Marker()
         .setLngLat(userLocation.value)
